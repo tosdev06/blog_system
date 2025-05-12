@@ -1,4 +1,6 @@
+
 <?php 
+include 'db.php';
 // Simple Markdown link parser
 function parseMarkdownLinks($text) {
     // Convert markdown links [text](url) to HTML
