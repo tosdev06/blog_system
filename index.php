@@ -108,7 +108,7 @@ function parseMarkdownLinks($text) {
                 <h3>Categories</h3>
                 <ul class="categories">
                     <li><a href="index.php?category=Web Development">Web Development</a></li>
-                    <li><a href="index.php?category=PHP">Python</a></li>
+                    <li><a href="index.php?category=PHP">PHP</a></li>
                     <li><a href="index.php?category=Projects">Projects</a></li>
                 </ul>
             </div>
