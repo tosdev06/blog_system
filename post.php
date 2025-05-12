@@ -1,5 +1,6 @@
 
 <?php 
+include 'config.php'; 
 // Enhanced Markdown parser with link titles
 function parseMarkdownLinks($text) {
     // Convert markdown links [text](url "title") to HTML with title attribute
@@ -34,8 +35,7 @@ function parseMarkdownLinks($text) {
     return nl2br($text);
 }
 ?>
-<?php include 'config.php'; 
-
+<?php 
 if (!isset($_GET['id'])) {
     header("Location: index.php");
     exit();
