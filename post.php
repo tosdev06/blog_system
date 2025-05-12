@@ -1,6 +1,5 @@
-
-<?php 
-include 'config.php'; 
+<?php include 'config.php'; ?>
+<?php
 // Enhanced Markdown parser with link titles
 function parseMarkdownLinks($text) {
     // Convert markdown links [text](url "title") to HTML with title attribute
