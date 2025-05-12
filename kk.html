@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tosdev</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        /* Home Section */
+        .home {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .slideshow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slideshow img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            filter: brightness(0.7);
+        }
+
+        .slideshow img.active {
+            opacity: 1;
+        }
+
+        .text-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            text-align: center;
+            animation: fadeIn 1.5s ease-in-out;
+            width: 90%;
+            max-width: 800px;
+        }
+
+        .text-overlay p:first-child {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: slideInFromTop 1s ease-out;
+        }
+
+        .text-overlay p:last-child {
+            font-size: 1.5rem;
+            font-weight: normal;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            animation: slideInFromBottom 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translate(-50%, -60%); }
+            100% { opacity: 1; transform: translate(-50%, -50%); }
+        }
+
+        @keyframes slideInFromTop {
+            0% { transform: translateY(-100px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideInFromBottom {
+            0% { transform: translateY(100px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: transparent;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            color: #fff;
+            transition: all 0.5s ease;
+        }
+
+        .header.scrolled {
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 15px 5%;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            color: #4e9af1;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .menu ul {
+            display: flex;
+            list-style: none;
+        }
+
+        .menu li {
+            margin: 0 15px;
+            position: relative;
+        }
+
+        .menu li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 500;
+            padding: 5px 10px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .menu li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: #4e9af1;
+            bottom: 0;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+
+        .menu li a:hover::after {
+            width: 100%;
+        }
+
+        .menu li a:hover {
+            color: #4e9af1;
+        }
+
+        /* About Section */
+        .about {
+            position: relative;
+            width: 100%;
+            padding: 100px 5%;
+            background: #fff;
+        }
+
+        .about header {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 40px;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .about header::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: #4e9af1;
+            margin: 15px auto;
+            border-radius: 2px;
+        }
+
+        .content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .content-text {
+            flex: 1;
+            min-width: 300px;
+            animation: fadeInLeft 1s ease-out;
+        }
+
+        .content-text h2 {
+            font-size: 35px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .content-text p {
+            font-size: 18px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .content-img {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            animation: fadeInRight 1s ease-out;
+            transition: transform 0.5s ease;
+        }
+
+        .content-img:hover {
+            transform: translateY(-10px);
+        }
+
+        .content-img img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .content-img:hover img {
+            transform: scale(1.05);
+        }
+
+        .skill-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 40px;
+            justify-content: center;
+        }
+
+        .skill {
+            background: #2c3e50;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .skill:hover {
+            background: #4e9af1;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Services Section */
+        .Services {
+            position: relative;
+            width: 100%;
+            padding: 100px 5%;
+            background: #f9f9f9;
+        }
+
+        .Services header {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 40px;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .Services header::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: #4e9af1;
+            margin: 15px auto;
+            border-radius: 2px;
+        }
+
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            width: 300px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: #4e9af1;
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .card:hover::before {
+            height: 100%;
+        }
+
+        .card h1 {
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover h1 {
+            color: white;
+        }
+
+        .card p {
+            color: #555;
+            line-height: 1.6;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .card:hover p {
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 50px 5% 20px;
+            text-align: center;
+        }
+
+        footer p {
+            margin-bottom: 20px;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background: #4e9af1;
+            transform: translateY(-5px);
+        }
+
+        .social-icons img {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Animations */
+        @keyframes fadeInLeft {
+            0% { opacity: 0; transform: translateX(-50px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeInRight {
+            0% { opacity: 0; transform: translateX(50px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Responsive Styles */
+        @media screen and (max-width: 992px) {
+            .text-overlay p:first-child {
+                font-size: 2rem;
+            }
+            
+            .text-overlay p:last-child {
+                font-size: 1.2rem;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 300px;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.9);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: right 0.5s ease;
+                z-index: 1000;
+            }
+            
+            .menu.active {
+                right: 0;
+            }
+            
+            .menu ul {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .menu li {
+                margin: 15px 0;
+                text-align: center;
+            }
+            
+            .menu li a {
+                font-size: 20px;
+            }
+            
+            .content-text, .content-img {
+                flex: 100%;
+            }
+            
+            .content-img {
+                margin-top: 30px;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .text-overlay p:first-child {
+                font-size: 1.5rem;
+            }
+            
+            .text-overlay p:last-child {
+                font-size: 1rem;
+            }
+            
+            .about header, .Services header {
+                font-size: 32px;
+            }
+            
+            .content-text h2 {
+                font-size: 28px;
+            }
+            
+            .card {
+                width: 100%;
+                max-width: 350px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .text-overlay {
+                width: 95%;
+            }
+            
+            .text-overlay p:first-child {
+                font-size: 1.3rem;
+            }
+            
+            .header {
+                padding: 15px;
+            }
+            
+            .logo {
+                font-size: 20px;
+            }
+            
+            .menu {
+                width: 80%;
+            }
+            
+            .skill {
+                padding: 8px 15px;
+                font-size: 14px;
+            }
+        }
+
+        /* Scroll Reveal Animation */
+        .reveal {
+            position: relative;
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all 1s ease;
+        }
+
+        .reveal.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <section id="home" class="home"> 
+        <div class="header">
+            <div class="logo">
+                <p>TOSDEV</p>
+            </div>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="menu">
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#Services">Our Services</a></li>
+                    <li><a href="#">Web Hosting</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+       
+
+        <div class="slideshow">
+            <img src="pp1.jpg" class="active">
+            <img src="pp2.jpg">
+        <img src="pp3.jpg">
+        <img src="pp2.jpg">
+        <img src="pp1.jpg">
+        </div>
+
+        <div class="text-overlay">
+            <p>Welcome to Tosdev – Innovation at Its Best</p>
+            <p>We Work With Reliable Team To Give You The Best Solution</p>
+        </div>
+        
+        <a href="#about" class="scroll-down">
+            <i class="fas fa-chevron-down"></i>
+        </a>
+    </section>
+    
+    <section id="about" class="about">
+        <header class="reveal">About Us</header>
+        <div class="content">
+            <div class="content-text reveal">
+                <h2>We Grow Brands and Create Experiences</h2>
+                <p>Olawuyi Tofunmi, also known as TOSDEV, is a passionate Software Engineering 
+                    student at Babcock University. With a strong dedication to innovation
+                     and problem-solving, TOSDEV specializes in developing cutting-edge software 
+                     solutions that enhance user experiences and drive business growth.</p>
+                <p>Our team combines creativity with technical expertise to deliver solutions that 
+                    not only meet but exceed our clients' expectations. We believe in building 
+                    long-term relationships through transparency, quality, and innovation.</p>
+            </div>
+            <div class="content-img reveal">
+                <img src="pp4.webp" alt="Tosdev Team">
+            </div>
+        </div>
+
+        <div class="skill-container reveal">
+            <span class="skill">HTML</span>
+            <span class="skill">CSS</span>
+            <span class="skill">JavaScript</span>
+            <span class="skill">PHP</span>
+            <span class="skill">MySQL</span>
+        </div>
+    </section>
+    
+    <section id="Services" class="Services">
+        <div class="serv-con">
+            <header class="reveal">Our Services</header>
+            <div class="cards">
+                <div class="card reveal">
+                    <h1>Software Development</h1>
+                    <p>Our experienced and dedicated team 
+                        specializes in creating custom software 
+                        solutions tailored to your organization's 
+                        unique needs. Whether it's a web 
+                        application, mobile app,
+                         or enterprise software, we ensure
+                          scalability, security, and efficiency.</p>
+                </div>
+                <div class="card reveal">
+                    <h1>Data Analysis</h1>
+                    <p>Unlock valuable insights from your data 
+                        with our data analysis services. We help 
+                        businesses make data-driven decisions 
+                        through data visualization, trend analysis,
+                         and predictive analytics to improve 
+                         operations and strategy.</p>
+                </div>
+                <div class="card reveal">
+                    <h1>Online Payment Integration</h1>
+                    <p>We provide seamless payment gateway 
+                        integration to help businesses accept
+                         online transactions securely and 
+                         efficiently. Our solutions support 
+                        multiple payment methods, including 
+                        credit/debit cards, mobile wallets, 
+                        and bank transfers.</p>
+                </div>
+                <div class="card reveal">
+                    <h1>Software Deployment</h1>
+                    <p>From development to launch, we handle 
+                        the end-to-end deployment process, 
+                        ensuring your software runs smoothly
+                         and efficiently. Our team ensures proper
+                         configuration, testing, and 
+                         optimization for a successful 
+                         go-live experience.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="reveal">
+        <p>&copy; 2024 Tosdev. All Rights Reserved.</p>
+        <div class="social-icons">
+            <a href="https://x.com/OlawuyiOluwat19" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/124/124021.png" alt="Twitter"></a>
+            <a href="https://www.linkedin.com/in/olawuyi-oluwatofunmi-407846307" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn"></a>
+            <a href="https://github.com/tosdev06" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub"></a>
+        </div>
+    </footer>
+
+    <script>
+        // Slideshow functionality
+        let index = 0;
+        const slides = document.querySelectorAll(".slideshow img");
+        const textOverlay = document.querySelector(".text-overlay");
+        const header = document.querySelector(".header"); 
+        
+        const slideTexts = [
+            {
+                title: "Welcome to Tosdev – Innovation at Its Best",
+                subtitle: "We Work With Reliable Team To Give You The Best Solution"
+            },
+            {
+                title: "💻 We Build Stunning & Scalable Digital Solutions",
+                subtitle: "Custom software tailored to your business needs"
+            },
+            {
+                title: "📈 Elevate Your Business with Cutting-Edge Technology",
+                subtitle: "Stay ahead of the competition with our innovative solutions"
+            },
+            {
+                title: "🌐 Your Vision, Our Expertise – Let's Build Together",
+                subtitle: "Transforming ideas into reality since day one"
+            },
+            {
+                title: "🔒 Secure, Fast & Reliable Web Solutions",
+                subtitle: "Performance and security you can trust"
+            }
+        ];
+
+        function showNextSlide() {
+            slides[index].classList.remove("active");
+            index = (index + 1) % slides.length;
+            slides[index].classList.add("active");
+            
+            // Update text overlay with animation
+            textOverlay.style.opacity = 0;
+            setTimeout(() => {
+                textOverlay.querySelector('p:first-child').textContent = slideTexts[index].title;
+                textOverlay.querySelector('p:last-child').textContent = slideTexts[index].subtitle;
+                textOverlay.style.opacity = 1;
+            }, 500);
+        }
+
+        setInterval(showNextSlide, 5000);
+
+        // Header scroll effect
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 50) {
+                header.classList.add("scrolled"); 
+            } else {
+                header.classList.remove("scrolled"); 
+            }
+        });
+
+        // Mobile menu toggle
+        document.addEventListener("DOMContentLoaded", function () {
+            const menuToggle = document.querySelector(".menu-toggle");
+            const menu = document.querySelector(".menu");
+            
+            menuToggle.addEventListener("click", function () {
+                menu.classList.toggle("active");
+                menuToggle.querySelector('i').classList.toggle("fa-times");
+                menuToggle.querySelector('i').classList.toggle("fa-bars");
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                        
+                        // Close mobile menu if open
+                        if (menu.classList.contains('active')) {
+                            menu.classList.remove('active');
+                            menuToggle.querySelector('i').classList.toggle("fa-times");
+                            menuToggle.querySelector('i').classList.toggle("fa-bars");
+                        }
+                    }
+                });
+            });
+            
+            // Scroll reveal animation
+            const revealElements = document.querySelectorAll('.reveal');
+            
+            function checkReveal() {
+                const windowHeight = window.innerHeight;
+                const revealPoint = 150;
+                
+                revealElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    
+                    if (elementTop < windowHeight - revealPoint) {
+                        element.classList.add('active');
+                    }
+                });
+            }
+            
+            window.addEventListener('scroll', checkReveal);
+            window.addEventListener('load', checkReveal);
+        });
+    </script>
+</body>
+</html>
