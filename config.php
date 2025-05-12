@@ -1,5 +1,4 @@
 <?php
-// MUST be first line with no whitespace before!
 session_start();
 
 // Use environment variables
