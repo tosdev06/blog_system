@@ -1,4 +1,4 @@
-
+<?php include 'config.php'; ?>
 <?php 
 // Simple Markdown link parser
 function parseMarkdownLinks($text) {
@@ -14,7 +14,7 @@ function parseMarkdownLinks($text) {
 }
 ?>
 
-<?php include 'config.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
